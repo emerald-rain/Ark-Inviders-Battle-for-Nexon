@@ -77,13 +77,13 @@ public sealed class GameManager : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
-        scoreText.text = score.ToString().PadLeft(4, '0');
+        scoreText.text = "Score: " + score.ToString().PadLeft(4, '0');
     }
 
     private void SetLives(int lives)
     {
         this.lives = Mathf.Max(lives, 0);
-        livesText.text = lives.ToString();
+        livesText.text = "Lives: " + lives.ToString();
     }
 
     private void OnPlayerKilled()
