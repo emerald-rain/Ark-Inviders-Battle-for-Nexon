@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using TMPro;
 
 public sealed class GameManager : MonoBehaviour
 {
@@ -8,7 +10,11 @@ public sealed class GameManager : MonoBehaviour
     private MysteryShip mysteryShip;
     private Bunker[] bunkers;
 
+    public Text inputScore;
+    public TMP_InputField inputName;
+
     public GameObject gameOverUI;
+    public GameObject mainMenuUI;
     public Text scoreText;
     public Text livesText;
 
@@ -29,12 +35,32 @@ public sealed class GameManager : MonoBehaviour
         mysteryShip.killed += OnMysteryShipKilled;
         invaders.killed += OnInvaderKilled;
 
-        NewGame();
+        MainMenu();
     }
 
-    private void Update()
+    private void MainMenu() // Главное меню
+    {
+        mainMenuUI.SetActive(true);
+        gameOverUI.SetActive(false);
+
+        invaders.gameObject.SetActive(false);
+        player.gameObject.SetActive(false);
+    }
+
+    public UnityEvent<string, int> submitScoreEvent;
+
+    public void SubmitScore() {
+        submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text));
+    }
+
+    private void Update() // Ожидание Return в менюшках
     {
         if (lives <= 0 && Input.GetKeyDown(KeyCode.Return)) {
+            NewGame();
+        }
+
+        if (mainMenuUI.activeSelf && Input.GetKeyDown(KeyCode.Return)) {
+            mainMenuUI.SetActive(false);
             NewGame();
         }
     }
@@ -42,7 +68,7 @@ public sealed class GameManager : MonoBehaviour
     private void NewGame()
     {
         gameOverUI.SetActive(false);
-
+        
         SetScore(0);
         SetLives(3);
         NewRound();
@@ -56,7 +82,6 @@ public sealed class GameManager : MonoBehaviour
         for (int i = 0; i < bunkers.Length; i++) {
             bunkers[i].ResetBunker();
         }
-
         Respawn();
     }
 
@@ -70,6 +95,7 @@ public sealed class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+        SubmitScore();
         gameOverUI.SetActive(true);
         invaders.gameObject.SetActive(false);
     }
@@ -77,7 +103,7 @@ public sealed class GameManager : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
-        scoreText.text = "Score: " + score.ToString().PadLeft(4, '0');
+        scoreText.text = score.ToString();
     }
 
     private void SetLives(int lives)
@@ -102,7 +128,6 @@ public sealed class GameManager : MonoBehaviour
     private void OnInvaderKilled(Invader invader)
     {
         SetScore(score + invader.score);
-
         if (invaders.AmountKilled == invaders.TotalAmount) {
             NewRound();
         }
