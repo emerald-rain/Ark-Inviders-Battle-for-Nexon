@@ -12,7 +12,8 @@ public class Leaderboard : MonoBehaviour
     private List <TextMeshProUGUI> scores;
 
     private string publicLeaderboardKey = 
-        "4388bd0ec6d6b93677679b8a57406fe7b70d33711b47df08adef2e4b9e0c5076";
+        "83e7acabd11753617b3bb20091dcd8dfd992909c7ae6c8d3c98747aa4c39a378";
+        // secret key is 2f74d4c404ea5ff7baefb38d4fefd48061f74ac8c81aee2e72bd997fbe5b9389984ca6cf5ffb59fc2f56456083a451982bc7d7b54fafad18efe75434e6178e5a02d2f88b795ba3e1d1233dbd4f0f33423eef301f3d20947960a0975aa1ebd87e911caa16dfd18bbc532fdcfc0f2de2611dac2bd01eb2112c086848c87a11c33d
 
     private void Start() 
     {
