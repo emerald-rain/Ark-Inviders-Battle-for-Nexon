@@ -30,10 +30,9 @@ public class Leaderboard : MonoBehaviour
         }));
     }
 
-
-    public void SetLeaderboardEntry(string Username, int score) {
+    public void SetLeaderboardEntry(string Username, int score, string extra) {
         LeaderboardCreator.UploadNewEntry(publicLeaderboardKey, Username, 
-        score, ((msg) => {
+        score, extra, ((msg) => {
             GetLeaderboard();
         }));
     }

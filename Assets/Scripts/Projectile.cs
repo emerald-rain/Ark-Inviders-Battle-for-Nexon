@@ -27,11 +27,7 @@ public class Projectile : MonoBehaviour
 
     private void CheckCollision(Collider2D other)
     {
-        Bunker bunker = other.gameObject.GetComponent<Bunker>();
-
-        if (bunker == null || bunker.CheckCollision(collider, transform.position)) {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
