@@ -12,6 +12,8 @@ public class MysteryShip : MonoBehaviour
     public int direction { get; private set; } = -1;
     public bool spawned { get; private set; }
 
+    private SoundManager soundManager; // SoundManager
+
     private void Start()
     {
         // Transform the viewport to world coordinates so we can set the mystery
@@ -27,6 +29,8 @@ public class MysteryShip : MonoBehaviour
         Vector3 right = transform.position;
         right.x = rightEdge.x + 1f;
         rightDestination = right;
+
+        soundManager = SoundManager.Instance; // SoundManager
 
         transform.position = leftDestination;
         Despawn();
@@ -50,6 +54,8 @@ public class MysteryShip : MonoBehaviour
         transform.position += Vector3.right * speed * Time.deltaTime;
 
         if (transform.position.x >= rightDestination.x) {
+            soundManager.stopSoundMysteryShip(); // SoundManager
+            soundManager.StartCoroutine(soundManager.RestoreGameMusicVolume()); // SoundManager
             Despawn();
         }
     }
@@ -59,6 +65,8 @@ public class MysteryShip : MonoBehaviour
         transform.position += Vector3.left * speed * Time.deltaTime;
 
         if (transform.position.x <= leftDestination.x) {
+            soundManager.stopSoundMysteryShip(); // SoundManager
+            soundManager.StartCoroutine(soundManager.RestoreGameMusicVolume()); // SoundManager
             Despawn();
         }
     }
@@ -66,6 +74,7 @@ public class MysteryShip : MonoBehaviour
     private void Spawn()
     {
         direction *= -1;
+        soundManager.playSoundMysteryShip();
 
         if (direction == 1) {
             transform.position = leftDestination;
@@ -93,6 +102,8 @@ public class MysteryShip : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
         {
+            soundManager.stopSoundMysteryShip(); // SoundManager
+            soundManager.StartCoroutine(soundManager.RestoreGameMusicVolume()); // SoundManager
             Despawn();
 
             if (killed != null) {

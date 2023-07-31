@@ -7,6 +7,12 @@ public class Player : MonoBehaviour
     public System.Action killed;
     public bool laserActive { get; private set; }
 
+    private SoundManager soundManager; // SoundManager
+
+    private void Start() {
+        soundManager = SoundManager.Instance; // SoundManager
+    }
+
     private void Update()
     {
         Vector3 position = transform.position;
@@ -37,6 +43,7 @@ public class Player : MonoBehaviour
         if (!laserActive)
         {
             laserActive = true;
+            soundManager.playSoundShoot(); // play shoot sound
 
             Projectile laser = Instantiate(laserPrefab, transform.position, Quaternion.identity);
             laser.destroyed += OnLaserDestroyed;

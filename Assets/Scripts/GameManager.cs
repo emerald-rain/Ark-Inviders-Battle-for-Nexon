@@ -22,6 +22,9 @@ public sealed class GameManager : MonoBehaviour
     public Sprite[] skins; // ark skin list for NFT holders
     public Sprite noNFTskin; // skin sprite for non NFT players
 
+    private SoundManager soundManager; // SoundManager
+    private bool isGameMusicPlaying = false; // SoundManager EnterMenu Bug Fixer
+
     public int score { get; private set; }
     public int lives { get; private set; }
 
@@ -40,6 +43,7 @@ public sealed class GameManager : MonoBehaviour
         invaders.killed += OnInvaderKilled;
 
         ownNFT = PlayerPrefs.GetInt("OwnNFT", 0) == 1; // getting ownNFT from previous scene
+        soundManager = SoundManager.Instance; // SoundManager
         MainMenu();
     }
 
@@ -51,24 +55,40 @@ public sealed class GameManager : MonoBehaviour
         player.gameObject.SetActive(false);
     }
 
-    private void Update() { // Ожидание Return в менюшках
+    private void Update() { // wait Return in menus
         if (lives <= 0 && Input.GetKeyDown(KeyCode.Return)) {
+            soundManager.playSoundPressEnter(); // SoundManager
+
+            if (!isGameMusicPlaying) {
+                soundManager.playGameMusic(); // SoundManager
+                isGameMusicPlaying = true;
+            }
+
             NewGame();
         }
 
         if (mainMenuUI.activeSelf && Input.GetKeyDown(KeyCode.Return)) {
+
             mainMenuUI.SetActive(false);
+            soundManager.playSoundPressEnter(); // SoundManager
+
+            if (!isGameMusicPlaying) {
+                soundManager.playGameMusic(); // SoundManager
+                isGameMusicPlaying = true;
+            }
+
             NewGame();
         }
     }
 
     private void NewGame() {
         gameOverUI.SetActive(false);
-        
+        ApplyRandomSkin(); // apply random skin to the player
+
         SetScore(0);
         SetLives(3);
         NewRound();
-        ApplyRandomSkin(); // apply random skin to the player
+        
     }
 
     private void NewRound() {
@@ -84,7 +104,13 @@ public sealed class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
     }
 
-    private void GameOver() { // game over function
+    private void GameOver() { // GAME OVER
+    
+        soundManager.stopGameMusic(); // SoundManager
+        soundManager.playSoundGameOver(); // SoundManager
+        soundManager.playMusicGameOver(); // SoundManager
+        
+
         SubmitScore(); // send the finall score to the server
         gameOverUI.SetActive(true); // after death UI
         invaders.gameObject.SetActive(false); // delete invader from the scene

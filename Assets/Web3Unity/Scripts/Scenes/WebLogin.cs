@@ -26,6 +26,8 @@ public class WebLogin : MonoBehaviour
     public Text loginButtonText; // text what's inside that button
     public Color loginButtonTextColor = Color.white; // color picker if no NFT
 
+    private SoundManager soundManager; // SoundManager
+
     private bool ownNFT;
     
     void Start()
@@ -37,10 +39,13 @@ public class WebLogin : MonoBehaviour
         PlayerPrefs.SetString("Chain", projectConfigSO.Chain);
         PlayerPrefs.SetString("Network", projectConfigSO.Network);
         PlayerPrefs.SetString("RPC", projectConfigSO.RPC);
+
+        soundManager = SoundManager.Instance; // SoundManager
     }
 
     public void OnLogin()
     {
+        soundManager.playSoundMM();
         Web3Connect();
         OnConnected();
     }
@@ -73,11 +78,10 @@ public class WebLogin : MonoBehaviour
         PlayerPrefs.SetString("Account", account); // save account for next scene
         SetConnectAccount(""); // reset login message
 
-        if (balance > 0){ // if balace more 0
-            // load game scene if own nft
+        if (balance > 0) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        else{ // if balance lower 0
+        else {
             loginButtonText.color = loginButtonTextColor; // red text on button
             loginButtonText.text = "You don't own the NFT";
             loginButton.interactable = false; // uninteractible login button
@@ -86,9 +90,8 @@ public class WebLogin : MonoBehaviour
 
     public void OnSkip()
     {
-        // burner account for skipped sign in screen
-        PlayerPrefs.SetString("Account", "");
-        // move to next scene
+        soundManager.playSoundSkip(); // skip button sound
+        PlayerPrefs.SetString("Account", ""); // saving empty account string
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
