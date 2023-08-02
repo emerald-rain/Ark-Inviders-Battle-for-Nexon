@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 42730815}
   - component: {fileID: 42730814}
   - component: {fileID: 42730813}
+  - component: {fileID: 42730816}
   m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
@@ -452,6 +453,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42730811}
   m_CullTransparentMesh: 1
+--- !u!95 &42730816
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42730811}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 109d3a03e9442c54299f682fd88c2466, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &44168896
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,8 +789,8 @@ Transform:
   m_GameObject: {fileID: 100500848}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0.3, z: 10}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.1, y: -0.4, z: 10}
+  m_LocalScale: {x: 0.59645, y: 0.59645, z: 1.1929}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 519420032}
@@ -859,7 +881,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 232.7, y: 339.81558}
+  m_AnchoredPosition: {x: 231.8, y: 494.4}
   m_SizeDelta: {x: 42.499878, y: 14.618774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188796889
@@ -2509,22 +2531,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 3
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      time: 0.17418982
+      value: 1.4927945
+      inSlope: 12.912098
+      outSlope: 12.912098
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 9
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      time: 3.9140399
+      value: 49.782104
+      inSlope: 12.912098
+      outSlope: 12.912098
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -3619,9 +3641,9 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 1000}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.509
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5374,7 +5396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -393, y: 346}
+  m_AnchoredPosition: {x: -450, y: 500}
   m_SizeDelta: {x: 1, y: 2.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984502043

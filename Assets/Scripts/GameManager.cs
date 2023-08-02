@@ -8,19 +8,24 @@ public sealed class GameManager : MonoBehaviour
     private Player player;
     private Invaders invaders;
     private MysteryShip mysteryShip;
-
+    
+    [Header("Inputs for leaderboard server")]
     public Text inputScore;
     public TMP_InputField inputName;
     public TMP_InputField inputTG;
 
-    public GameObject gameOverUI;
-    public GameObject mainMenuUI;
-    public Text scoreText;
-    public Text livesText;
+    [Header("Game UIs")]
+    public GameObject gameOverUI; // Game Over UI
+    public GameObject mainMenuUI; // Main Menu UI
 
+    [Header("Score and Lives")]
+    public Text scoreText; // Score
+    public Text livesText; // Lives
+
+    [Header("Skins system")]
     public GameObject targetObject; // object to which skins are applied
-    public Sprite[] skins; // ark skin list for NFT holders
     public Sprite noNFTskin; // skin sprite for non NFT players
+    public Sprite[] skins; // ark skin list for NFT holders
 
     private SoundManager soundManager; // SoundManager
     private bool isGameMusicPlaying = false; // SoundManager EnterMenu Bug Fixer
@@ -35,6 +40,7 @@ public sealed class GameManager : MonoBehaviour
         player = FindObjectOfType<Player>();
         invaders = FindObjectOfType<Invaders>();
         mysteryShip = FindObjectOfType<MysteryShip>();
+        SetLives(3); // Fixes Update() function
     }
 
     private void Start() { // start function
@@ -63,21 +69,28 @@ public sealed class GameManager : MonoBehaviour
                 soundManager.playGameMusic(); // SoundManager
                 isGameMusicPlaying = true;
             }
-
-            NewGame();
         }
+
+        // If Name entered, menu exist and Enter key then play
+        // If Name is NOT entered, but other things the same, then do change the text.
 
         if (mainMenuUI.activeSelf && Input.GetKeyDown(KeyCode.Return)) {
 
-            mainMenuUI.SetActive(false);
-            soundManager.playSoundPressEnter(); // SoundManager
+            if (string.IsNullOrWhiteSpace(inputName.text)) { // inputName FAILED
+                inputName.placeholder.GetComponent<TMP_Text>().text = "* name required *";
+                soundManager.playSoundInputNameFailed(); // SoundManager
+            }            
+            else { // If player PUTS HIS FUCKING NAME
 
-            if (!isGameMusicPlaying) {
-                soundManager.playGameMusic(); // SoundManager
-                isGameMusicPlaying = true;
+                if (!isGameMusicPlaying) {
+                    soundManager.playGameMusic(); // SoundManager
+                    isGameMusicPlaying = true;
+                }
+
+                soundManager.playSoundPressEnter(); // SoundManager
+                mainMenuUI.SetActive(false); // turning off menu
+                NewGame(); // lfg
             }
-
-            NewGame();
         }
     }
 
@@ -163,11 +176,14 @@ public sealed class GameManager : MonoBehaviour
     public UnityEvent<string, int, string> submitScoreEvent;
     public void SubmitScore() {
         if (ownNFT) { // Check if 'ownNFT' is true
+            string account = PlayerPrefs.GetString("Account"); // Get the wallet adress
+            inputTG.text = inputTG.text + ", " + account;
             submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
             print(inputTG);
         }
         else {
-            print("Cannot submit score. You don't own the NFT.");
+            submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
+            print("You don't own the NFT.");
         }
     }
 

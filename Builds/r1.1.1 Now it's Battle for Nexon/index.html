@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Battle for Nexon by malysh_ka</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <script type="module" crossorigin src="./assets/index-f9496d0e.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: rgb(123, 140, 216);
+      }
+
+      header.top-strip {
+        width: 100%;
+        height: 50px;
+        background-color: #3F3366;
+        padding: 0px 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        color: white;
+      }
+
+      header.top-strip a {
+        font-size: 24px;
+        color: #FFF;
+        font-family: "Poppins", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: -0.3px;
+        text-decoration: none;
+      }
+
+      footer {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        padding: 9px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: #301c72;
+      }
+      
+      .mail-info {
+        display: flex;
+        height: 23px;
+        flex-direction: column;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #FFF;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-decoration-line: underline;
+        letter-spacing: 0.5px;
+      }
+      
+      .footer-text {
+        display: flex;
+        height: 23px;
+        flex-direction: column;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #FFF;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.3px;
+      }
+
+      #unity-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="top-strip">
+      <a class="logo-link" href="https://degenerousdao.com">⇦ Back to DegenerousDAO</a>
+    </header>
+
+    <footer>
+      <div class="mail-info">info@degenerousdao.com</div>
+      <div class="footer-text">©2023 by DeGenerous Society Inc.</div>
+    </footer>
+
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Здесь находится внутренний скрипт игры. Оставляю его без изменений.
+      document.body.appendChild(Object.assign(document.createElement("script"), { type: "text/javascript", src: "./network.js" }));
+    </script>
+    
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+
+      function unityShowBanner(msg, type) {
+        // Функция для отображения временных сообщений (баннеров) или ошибок.
+        // Удаляю вывод сообщений, чтобы убрать надписи под игрой.
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/r1.1.1 Now it's Battle for Nexon.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/r1.1.1 Now it's Battle for Nexon.data",
+        frameworkUrl: buildUrl + "/r1.1.1 Now it's Battle for Nexon.framework.js",
+        codeUrl: buildUrl + "/r1.1.1 Now it's Battle for Nexon.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "sir_malysh empire",
+        productName: "Battle for Nexon",
+        productVersion: "1.1.1 ",
+        showBanner: unityShowBanner,
+      };
+      
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Отображаем сообщение на мобильных устройствах вместо запуска игры.
+        container.style.display = "none"; // Скрываем контейнер с игрой
+        var mobileWarning = document.createElement('div');
+        mobileWarning.innerHTML = "Sorry, the game is designed for PC.";
+        mobileWarning.style = "font-size: 24px; text-align: center; padding-top: 100px; color: red;";
+        document.body.appendChild(mobileWarning);
+      } else {
+        canvas.style.width = "100%";
+        canvas.style.height = "90%";
+      }
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

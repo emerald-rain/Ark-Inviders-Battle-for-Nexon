@@ -16,7 +16,8 @@ public class SoundManager : MonoBehaviour
         SoundShoot2,
         MusicLoginMenu,
         MusicGameOver,
-        SoundMysteryShip;
+        SoundMysteryShip,
+        SoundInputNameFailed;
 
     [SerializeField] private AudioSource[] GameMusicList;
 
@@ -74,6 +75,17 @@ public class SoundManager : MonoBehaviour
 
         // Play the selected music for the game
         randomGameMusic.Play();
+        StartCoroutine(WaitAndPlayNextRandomMusic());
+    }
+
+    private IEnumerator WaitAndPlayNextRandomMusic()
+    {
+        while (randomGameMusic.isPlaying) {
+            yield return null;
+        }
+
+        // The current music has finished playing, play the next random music
+        playGameMusic();
     }
 
     public void stopGameMusic() {
@@ -127,6 +139,10 @@ public class SoundManager : MonoBehaviour
 
         // Restore the original volume after the coroutine is finished
         randomGameMusic.volume = originalVolume; 
+    }
+
+    public void playSoundInputNameFailed() {
+        SoundInputNameFailed.Play();
     }
 
 }
