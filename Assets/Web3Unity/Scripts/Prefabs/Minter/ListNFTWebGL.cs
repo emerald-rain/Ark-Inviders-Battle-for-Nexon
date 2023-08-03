@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Models;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using Web3Unity.Scripts.Library.ETHEREUEM.Connect;
 
 #if UNITY_WEBGL
 public class ListNFTWebGL : MonoBehaviour
@@ -35,55 +35,55 @@ public class ListNFTWebGL : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    private async void Start()
+    async void Start()
     {
         playerAccount.text = account;
-        var response = await EVM.GetMintedNFT(chain, network, account);
+        List<MintedNFT.Response> response = await EVM.GetMintedNFT(chain, network, account);
 
-        if (response[1].uri.StartsWith("ipfs://"))
-            response[1].uri = response[1].uri.Replace("ipfs://", "https://ipfs.chainsafe.io/ipfs/");
+        if (response[0].uri.StartsWith("ipfs://"))
+        {
+            response[0].uri = response[0].uri.Replace("ipfs://", "https://ipfs.io/ipfs/");
+        }
 
-        var webRequest = UnityWebRequest.Get(response[1].uri);
+        UnityWebRequest webRequest = UnityWebRequest.Get(response[0].uri);
         await webRequest.SendWebRequest();
-        var data =
+        RootGetNFT data =
             JsonConvert.DeserializeObject<RootGetNFT>(
                 System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data));
         description.text = data.description;
         // parse json to get image uri
-        var imageUri = data.image;
+        string imageUri = data.image;
         if (imageUri.StartsWith("ipfs://"))
         {
-            imageUri = imageUri.Replace("ipfs://", "https://ipfs.chainsafe.io/ipfs/");
+            imageUri = imageUri.Replace("ipfs://", "https://ipfs.io/ipfs/");
             StartCoroutine(DownloadImage(imageUri));
         }
 
-        tokenURI.text = response[1].uri;
-        Debug.Log(response[1].uri);
-        contractAddr.text = response[1].nftContract;
-        isApproved.text = response[1].isApproved.ToString();
-        _itemID = response[1].id;
+        tokenURI.text = response[0].uri;
+        Debug.Log(response[0].uri);
+        contractAddr.text = response[0].nftContract;
+        isApproved.text = response[0].isApproved.ToString();
+        _itemID = response[0].id;
         _itemPrice = itemPrice.text;
-        _tokenType = response[1].tokenType;
+        _tokenType = response[0].tokenType;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private IEnumerator DownloadImage(string MediaUrl)
+    IEnumerator DownloadImage(string MediaUrl)
     {
-        var request = UnityWebRequestTexture.GetTexture(MediaUrl);
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ProtocolError)
-        {
             Debug.Log(request.error);
-        }
         else
         {
-            var webTexture = ((DownloadHandlerTexture) request.downloadHandler).texture as Texture2D;
-            var webSprite = SpriteFromTexture2D(webTexture);
+            Texture2D webTexture = ((DownloadHandlerTexture) request.downloadHandler).texture as Texture2D;
+            Sprite webSprite = SpriteFromTexture2D(webTexture);
             textureObject.GetComponent<Image>().sprite = webSprite;
         }
     }
 
-    private Sprite SpriteFromTexture2D(Texture2D texture)
+    Sprite SpriteFromTexture2D(Texture2D texture)
     {
         return Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f),
             100.0f);
@@ -91,18 +91,20 @@ public class ListNFTWebGL : MonoBehaviour
 
     public async void ListItem()
     {
-        var eth = float.Parse(_itemPrice);
+        float eth = float.Parse(_itemPrice);
         float decimals = 1000000000000000000; // 18 decimals
-        var wei = eth * decimals;
-        var response =
-            await EVM.CreateListNftTransaction(chain, network, account, _itemID, Convert.ToDecimal(wei).ToString(),
-                _tokenType);
-        var value = Convert.ToInt32(response.tx.value.hex, 16);
+        float wei = eth * decimals;
+        ListNFT.Response response =
+            await EVM.CreateListNftTransaction(chain, network, account, _itemID, Convert.ToDecimal(wei).ToString(), _tokenType);
+        int value = Convert.ToInt32(response.tx.value.hex, 16);
         try
         {
-            var responseNft = await Web3GL.SendTransactionData(response.tx.to, value.ToString(),
+            string responseNft = await Web3GL.SendTransactionData(response.tx.to, value.ToString(),
                 response.tx.gasPrice, response.tx.gasLimit, response.tx.data);
-            if (responseNft == null) Debug.Log("Empty Response Object:");
+            if (responseNft == null)
+            {
+                Debug.Log("Empty Response Object:");
+            }
         }
         catch (Exception e)
         {
@@ -111,3 +113,4 @@ public class ListNFTWebGL : MonoBehaviour
     }
 }
 #endif
+

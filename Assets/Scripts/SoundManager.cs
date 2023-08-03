@@ -75,27 +75,33 @@ public class SoundManager : MonoBehaviour
 
         // Play the selected music for the game
         randomGameMusic.Play();
-        StartCoroutine(WaitAndPlayNextRandomMusic());
+        // StartCoroutine(WaitAndPlayNextRandomMusic());
     }
 
-    private IEnumerator WaitAndPlayNextRandomMusic()
-    {
-        while (randomGameMusic.isPlaying) {
-            yield return null;
-        }
+    // private IEnumerator WaitAndPlayNextRandomMusic()
+    // {
+    //         while (randomGameMusic.isPlaying) {
+    //             yield return null;
+    //         }
 
-        // The current music has finished playing, play the next random music
-        playGameMusic();
-    }
+    //         // The current music has finished playing, play the next random music
+    //         playGameMusic();
+    // }
 
     public void stopGameMusic() {
+        print("да но нет");
         if (randomGameMusic.isPlaying) {
+            print("даааа сто что");
             randomGameMusic.Stop();
         }
     }
 
     public void playMusicGameOver() {
         MusicGameOver.Play();
+    }
+
+    public void stopMusicGameOver() {
+        MusicGameOver.Stop();
     }
 
     public void playSoundMysteryShip() {

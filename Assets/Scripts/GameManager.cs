@@ -62,13 +62,12 @@ public sealed class GameManager : MonoBehaviour
     }
 
     private void Update() { // wait Return in menus
-        if (lives <= 0 && Input.GetKeyDown(KeyCode.Return)) {
+        if (gameOverUI.activeSelf && Input.GetKeyDown(KeyCode.Return)) {
+            soundManager.stopMusicGameOver();
             soundManager.playSoundPressEnter(); // SoundManager
+            soundManager.playGameMusic(); // SoundManager
 
-            if (!isGameMusicPlaying) {
-                soundManager.playGameMusic(); // SoundManager
-                isGameMusicPlaying = true;
-            }
+            NewGame();
         }
 
         // If Name entered, menu exist and Enter key then play
@@ -81,12 +80,7 @@ public sealed class GameManager : MonoBehaviour
                 soundManager.playSoundInputNameFailed(); // SoundManager
             }            
             else { // If player PUTS HIS FUCKING NAME
-
-                if (!isGameMusicPlaying) {
-                    soundManager.playGameMusic(); // SoundManager
-                    isGameMusicPlaying = true;
-                }
-
+                soundManager.playGameMusic(); // SoundManager
                 soundManager.playSoundPressEnter(); // SoundManager
                 mainMenuUI.SetActive(false); // turning off menu
                 NewGame(); // lfg
@@ -118,7 +112,7 @@ public sealed class GameManager : MonoBehaviour
     }
 
     private void GameOver() { // GAME OVER
-    
+        print("почему?");
         soundManager.stopGameMusic(); // SoundManager
         soundManager.playSoundGameOver(); // SoundManager
         soundManager.playMusicGameOver(); // SoundManager
@@ -177,6 +171,11 @@ public sealed class GameManager : MonoBehaviour
     public void SubmitScore() {
         if (ownNFT) { // Check if 'ownNFT' is true
             string account = PlayerPrefs.GetString("Account"); // Get the wallet adress
+
+            if (string.IsNullOrEmpty(account)) {
+                account = null;
+            }
+
             inputTG.text = inputTG.text + ", " + account;
             submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
             print(inputTG);

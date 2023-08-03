@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Web3Unity.Scripts.Library.Web3Wallet;
 
 public class Web3WalletSha3Example : MonoBehaviour
 {

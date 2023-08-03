@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e300208fa3ee04a99d031a99308441, type: 3}
+  m_Script: {fileID: 11500000, guid: 2950675d94144a146905a5fdedce8b90, type: 3}
   m_Name: ProjectConfigData
   m_EditorClassIdentifier: 
   projectID: add25255-df87-4315-b681-d9c9e94de300
   chainID: 2109
-  chain: Exosama
-  network: Mainnet
+  chain: exosama
+  network: mainnet
+  symbol: 
   rpc: https://rpc.exosama.com

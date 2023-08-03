@@ -2,13 +2,13 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Web3Unity.Scripts.Library.ETHEREUEM.EIP;
-using System.Numerics;
 using UnityEngine.UI;
 
 #if UNITY_WEBGL
 public class WebLogin : MonoBehaviour
 {
+    ProjectConfigScriptableObject projectConfigSO = null;
+
     [DllImport("__Internal")]
     private static extern void Web3Connect();
 
@@ -20,25 +20,23 @@ public class WebLogin : MonoBehaviour
 
     private int expirationTime;
     private string account;
-    ProjectConfigScriptableObject projectConfigSO = null;
 
+    [Header("Button links")]
     public Button loginButton; // login with MM button
     public Text loginButtonText; // text what's inside that button
-    public Color loginButtonTextColor = Color.white; // color picker if no NFT
+    public Color loginButtonTextColor = Color.white; // color picker if no NFT 
 
     private SoundManager soundManager; // SoundManager
-
     private bool ownNFT;
-    
-    void Start()
+
+    void Start() 
     {
-        // loads the data saved from the editor config
         projectConfigSO = (ProjectConfigScriptableObject)Resources.Load("ProjectConfigData", typeof(ScriptableObject));
-        PlayerPrefs.SetString("ProjectID", projectConfigSO.ProjectID);
-        PlayerPrefs.SetString("ChainID", projectConfigSO.ChainID);
+        PlayerPrefs.SetString("ProjectID", projectConfigSO.ProjectId);
+        PlayerPrefs.SetString("ChainID", projectConfigSO.ChainId);
         PlayerPrefs.SetString("Chain", projectConfigSO.Chain);
         PlayerPrefs.SetString("Network", projectConfigSO.Network);
-        PlayerPrefs.SetString("RPC", projectConfigSO.RPC);
+        PlayerPrefs.SetString("RPC", projectConfigSO.Rpc);
 
         soundManager = SoundManager.Instance; // SoundManager
     }
@@ -53,27 +51,28 @@ public class WebLogin : MonoBehaviour
     async private void OnConnected()
     {
         account = ConnectAccount();
-        while (account == "")
-        {
+        while (account == "") {
             await new WaitForSeconds(1f);
             account = ConnectAccount();
         };
 
-        // Perform the balance check after login
         CheckBalanceAndLoadScene(account);
     }
 
-    private async void CheckBalanceAndLoadScene(string account)
+    async public void CheckBalanceAndLoadScene(string account)
     {
         // NFT contract
         string contract = "0x1aCB10DBD319DA52D941DFEC478f1aA2D118D7F7";
+        string chain = "exosama";
+        string network = "mainnet";
+        string rpc = "https://rpc.exosama.com";
 
-        // read actual balanceOf from the contract using rpc which is in the network.js 
-        int balance = await ERC721.BalanceOf(contract, account);
+        int balance = await ERC721.BalanceOf(chain, network, contract, account, rpc);
         ownNFT = balance > 0; // set ownNFT to True or False
         print(ownNFT);
         print(balance);
         
+        print("point3");
         PlayerPrefs.SetInt("OwnNFT", ownNFT ? 1 : 0); // save is holder
         PlayerPrefs.SetString("Account", account); // save account for next scene
         SetConnectAccount(""); // reset login message

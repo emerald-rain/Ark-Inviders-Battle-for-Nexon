@@ -1,44 +1,38 @@
-using System.Diagnostics.Contracts;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using Web3Unity.Scripts.Library.ETHEREUEM.EIP;
-using Web3Unity.Scripts.Library.Ethers.Contracts;
-using Web3Unity.Scripts.Library.Web3Wallet;
-using Web3Unity.Scripts.Prefabs;
-using Contract = Web3Unity.Scripts.Library.Ethers.Contracts.Contract;
+using Newtonsoft.Json;
 
 public class Web3WalletTransfer721Example : MonoBehaviour
 {
-    public async void OnTransfer721()
+    async public void OnTransfer721()
     {
         // https://chainlist.org/
-        var chainId = "5"; // goerli
+        string chainId = "5"; // goerli
         // contract to interact with 
-        var contract = "0x31A61D3B956d9E95e0b9434BEf24bfEebB48b2c5";
+        string contract = "0xde458cd3deaa28ce67beefe3f45368c875b3ffd6";
         // value in wei
-        var value = "0";
+        string value = "0";
         // abi in json format
-        var abi = ABI.ERC_721;
+        string abi = "[{ \"inputs\": [ { \"internalType\": \"address\", \"name\": \"from\", \"type\": \"address\" }, { \"internalType\": \"address\", \"name\": \"to\", \"type\": \"address\" }, { \"internalType\": \"uint256\", \"name\": \"tokenId\", \"type\": \"uint256\" } ], \"name\": \"safeTransferFrom\", \"outputs\": [], \"stateMutability\": \"nonpayable\", \"type\": \"function\" }]"; 
         // smart contract method to call
-        var method = ETH_METHOD.SafeTransferFrom;
+        string method = "safeTransferFrom";
         // account to send erc721 to
-        var toAccount = PlayerPrefs.GetString("Account");
+        string toAccount = PlayerPrefs.GetString("Account");
         // token id to send
-        var tokenId = "0";
-        var contractData = new Contract(abi, contract);
-
-        var data = contractData.Calldata(method, new object[]
-        {
-            toAccount,
-            toAccount,
-            tokenId
-        });
+        string tokenId = "5";
+        // array of arguments for contract
+        string[] obj = { PlayerPrefs.GetString("Account"), toAccount, tokenId };
+        string args = JsonConvert.SerializeObject(obj);
+        // create data to interact with smart contract
+        string data = await EVM.CreateContractData(abi, method, args);
         print(data);
         // gas limit OPTIONAL
-        var gasLimit = "";
+        string gasLimit = "";
         // gas price OPTIONAL
-        var gasPrice = "";
+        string gasPrice = "";
         // send transaction
-        var response = await Web3Wallet.SendTransaction(chainId, contract, value, data, gasLimit, gasPrice);
+        string response = await Web3Wallet.SendTransaction(chainId, contract, value, data, gasLimit, gasPrice);
         print(response);
     }
 }
