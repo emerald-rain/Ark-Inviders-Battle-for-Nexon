@@ -979,7 +979,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: r1.2 by malysh_ka
+  m_text: r1.2.4 by malysh_ka
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7233c681fa73534983569a411fe762b, type: 2}
   m_sharedMaterial: {fileID: -6827624588112426816, guid: e7233c681fa73534983569a411fe762b, type: 2}

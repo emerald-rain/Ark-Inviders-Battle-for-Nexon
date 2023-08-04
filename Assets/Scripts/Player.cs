@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections; // for laser delay system
 
 public class Player : MonoBehaviour
 {
@@ -47,6 +48,25 @@ public class Player : MonoBehaviour
 
             Projectile laser = Instantiate(laserPrefab, transform.position, Quaternion.identity);
             laser.destroyed += OnLaserDestroyed;
+
+            StartCoroutine(DestroyLaserAfterDelay(laser, 4f));
+        }
+    }
+
+    private IEnumerator DestroyLaserAfterDelay(Projectile laser, float delay)
+    {
+        float timer = 0f;
+        while (timer < delay)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // If the timer has exceeded the delay, destroy the laser
+        if (laser != null)
+        {
+            Destroy(laser.gameObject);
+            laserActive = false;
         }
     }
 
