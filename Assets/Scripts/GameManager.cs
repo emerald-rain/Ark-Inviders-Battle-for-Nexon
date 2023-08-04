@@ -173,7 +173,12 @@ public sealed class GameManager : MonoBehaviour
             string account = PlayerPrefs.GetString("Account"); // Get the wallet adress
 
             if (string.IsNullOrEmpty(account)) {
-                account = null;
+                account = "null";
+            }
+
+            if (string.IsNullOrEmpty(inputTG.text)) {
+                inputTG.text = "null";
+                print(inputTG.text);
             }
 
             inputTG.text = inputTG.text + ", " + account;
@@ -181,6 +186,11 @@ public sealed class GameManager : MonoBehaviour
             print(inputTG);
         }
         else {
+
+            if (string.IsNullOrEmpty(inputTG.text)) {
+                inputTG.text = "null";
+            }
+
             submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
             print("You don't own the NFT.");
         }
