@@ -418,7 +418,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '* tg is optional *'
+  m_text: '* optional username *'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1afab0ee158179a419997af9125bb4f7, type: 2}
   m_sharedMaterial: {fileID: 8957497668931675019, guid: 1afab0ee158179a419997af9125bb4f7, type: 2}
@@ -552,7 +552,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Name me in the leaderboard as                    and my @ in telegram is
+  m_text: Name me in the leaderboard as                    and my @ on tg/discord
+    is
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1afab0ee158179a419997af9125bb4f7, type: 2}
   m_sharedMaterial: {fileID: 8957497668931675019, guid: 1afab0ee158179a419997af9125bb4f7, type: 2}
@@ -1646,8 +1647,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 147.43, y: -121.7}
-  m_SizeDelta: {x: 394.87, y: 38.334}
+  m_AnchoredPosition: {x: 190.21552, y: -121.7}
+  m_SizeDelta: {x: 361.2406, y: 38.334}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &630422082
 MonoBehaviour:

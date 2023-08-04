@@ -28,7 +28,6 @@ public sealed class GameManager : MonoBehaviour
     public Sprite[] skins; // ark skin list for NFT holders
 
     private SoundManager soundManager; // SoundManager
-    private bool isGameMusicPlaying = false; // SoundManager EnterMenu Bug Fixer
 
     public int score { get; private set; }
     public int lives { get; private set; }
@@ -178,12 +177,10 @@ public sealed class GameManager : MonoBehaviour
 
             if (string.IsNullOrEmpty(inputTG.text)) {
                 inputTG.text = "null";
-                print(inputTG.text);
             }
 
             inputTG.text = inputTG.text + ", " + account;
             submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
-            print(inputTG);
         }
         else {
 
