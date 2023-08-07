@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using System.Collections;
 
 public sealed class GameManager : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public sealed class GameManager : MonoBehaviour
     public Sprite[] skins; // ark skin list for NFT holders
 
     private SoundManager soundManager; // SoundManager
+    private bool isPlayerInvincible = false;
 
     public int score { get; private set; }
     public int lives { get; private set; }
@@ -108,10 +110,12 @@ public sealed class GameManager : MonoBehaviour
         position.x = 0f;
         player.transform.position = position;
         player.gameObject.SetActive(true);
+
+        isPlayerInvincible = true;
+        StartCoroutine(InvincibilityTimer());
     }
 
     private void GameOver() { // GAME OVER
-        print("почему?");
         soundManager.stopGameMusic(); // SoundManager
         soundManager.playSoundGameOver(); // SoundManager
         soundManager.playMusicGameOver(); // SoundManager
@@ -133,13 +137,15 @@ public sealed class GameManager : MonoBehaviour
     }
 
     private void OnPlayerKilled() { // player was killed
-        SetLives(lives - 1); // reduce lives by 1
-        player.gameObject.SetActive(false); // delete player from scene
+        if (!isPlayerInvincible) {// Check if the player is invincible
+            SetLives(lives - 1); // Reduce lives by 1
+            player.gameObject.SetActive(false); // delete player from scene
 
-        if (lives > 0) { // if has lives
+            if (lives > 0) { // if has lives
             Invoke(nameof(NewRound), 1f);
-        } else { // if no lives
-            GameOver();
+            } else { // if no lives
+                GameOver();
+            }
         }
     }
 
@@ -190,7 +196,12 @@ public sealed class GameManager : MonoBehaviour
 
             submitScoreEvent.Invoke(inputName.text, int.Parse(inputScore.text), inputTG.text);
             print("You don't own the NFT.");
-        }
+        }      
     }
 
+    private IEnumerator InvincibilityTimer()
+    {
+        yield return new WaitForSeconds(1f); // Wait for 1 second
+        isPlayerInvincible = false; // Disable invincibility after 1 second
+    }
 }

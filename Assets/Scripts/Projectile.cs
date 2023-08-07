@@ -8,6 +8,11 @@ public class Projectile : MonoBehaviour
     public System.Action<Projectile> destroyed;
     public new BoxCollider2D collider { get; private set; }
 
+    public void DestroyProjectile()
+    {
+        Destroy(gameObject);
+    }
+    
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();

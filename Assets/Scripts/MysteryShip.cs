@@ -100,6 +100,10 @@ public class MysteryShip : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!spawned) {
+            return;
+        }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
         {
             soundManager.stopSoundMysteryShip(); // SoundManager

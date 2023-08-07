@@ -89,9 +89,7 @@ public class SoundManager : MonoBehaviour
     // }
 
     public void stopGameMusic() {
-        print("да но нет");
         if (randomGameMusic.isPlaying) {
-            print("даааа сто что");
             randomGameMusic.Stop();
         }
     }
